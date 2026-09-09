@@ -59,6 +59,25 @@ def form():
 
     return render_template("form.html", error=error)
 
+@app.route("/submittodoitem",methods=["POST"])
+def submit_todo_item():
+    try:
+        item_name=request.form.get("itemName")
+        item_description=request.form.get("itemDescription")
+
+        if not item_name or not item_description:
+            return "Item Name and Item Description are required.", 400
+
+        collection.insert({
+            "itemName": item_name,
+            "itemDescription": item_description
+        })
+
+        return "To-Do item submitted successfully!"
+
+    except Exception as e:
+        return f"Error: {str(e)}",500
+
 
 @app.route("/success")
 def success():
